@@ -15,16 +15,12 @@ int main()
     cin >> Rtotal;
     cout << "\nList Available Resistors Greater than Total Resistance\n";
     
-    stack<float> Resistors;
     float input = 1;
     while (input != 0) {
         cin >> input;
         cout << "\n";
-        Resistors.push(input);
-        float tempR = Resistors.top();
-	if (tempR != 0) {
-        Resistors.pop();
-        cout << "For " << tempR << " Ohms you need " << findNeededResistor(tempR,Rtotal) << " Ohms.\n";
+	if (input != 0) {
+        cout << "For " << input << " Ohms you need " << findNeededResistor(input,Rtotal) << " Ohms.\n";
 }
     }
 	cout << "\nEnding...\n";
