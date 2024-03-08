@@ -221,6 +221,7 @@ int main()
             print(countLines,databaseVector);
             }
             while (Rtotal != -1) {
+            cout << "\n";
             cout << "What total Resistance do you need?" << endl;
             cin >> Rtotal;
             if(Rtotal < 0) {
@@ -268,6 +269,7 @@ int main()
 
                 }
             }
+            if (ResistanceOffset <= MaximumOffset) {
             if (duplicateSituation) {
                 cout << "\n" << "The closest resistance is " << BestResistanceValue << " Ohms. It is off by " << ResistanceOffset << " Ohms." << endl;
                 cout << "\n" << "The combination of resistors is: " << endl;
@@ -283,6 +285,40 @@ int main()
                     cout << EveryCombination[BestSubsetIndex][i] << " ";
                 }
                 cout << endl;
+            }
+            }
+            //If offset is too high, check every resistor in parallel with itself from 2 to 5 in parallel
+            else {
+                double BestResistor = -1;
+                int NumResistors = 1000;
+                double Offset = MaximumOffset;
+                for (int j = 2; j <= 5; j++) {
+                for (int i = 0; i < countLines; i++) {
+                    int countResistors = 0;
+                    vector<double> r;
+                    for (int k = 0; k < j; k++) {
+                        r.push_back(Database[i]);
+                        countResistors++;
+                    }
+                    if ((abs(ParallelResistorsMultiple(r,j)-Rtotal) < MaximumOffset) && (countResistors < NumResistors)) {
+                        BestResistor = r[0];
+                        NumResistors = countResistors;
+                        Offset = abs(ParallelResistorsMultiple(r,j)-Rtotal);
+                    }
+                }
+                }
+                if (BestResistor>0) {
+                cout << "The closest resistance is " << BestResistor/NumResistors << " Ohms. It is off by " << Offset << " Ohms." << endl;
+                cout << "The combination of resistors is: " << endl;
+                for (int i = 0; i < NumResistors; i++) {
+                    cout << BestResistor << " ";
+                }
+                cout << endl;
+                }
+                else {
+                    cout << "No reasonable combinations found within your offset" << endl;
+                }
+
             }
 
 
