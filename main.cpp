@@ -5,12 +5,13 @@
 #include <set>
 #include<vector>
 #include<cctype>
+#include<float.h>
 using namespace std;
 
 //Some Functions here to for the 3rd choice in the program
 //Calculate the size of n resistors in parallel
-float ParallelResistorsMultiple(vector<float> Resistances, int size) {
-    float sum = 0;
+double ParallelResistorsMultiple(vector<double> Resistances, int size) {
+    double sum = 0;
     //add inverses
     for (int i = 0; i < size; i++) {
         sum += 1/Resistances[i];
@@ -23,9 +24,9 @@ float ParallelResistorsMultiple(vector<float> Resistances, int size) {
 }
 
 //This code comes from geeksforgeeks.org bc I refuse to spend hours thinking abt this one part of the system.
-void solve(vector<float>& arr, int n,
-           set<vector<float> >& ans,
-           vector<float> v, int i)
+void solve(vector<double>& arr, int n,
+           set<vector<double> >& ans,
+           vector<double> v, int i)
 {
     if (i >= n) {
         ans.insert(v);
@@ -40,20 +41,20 @@ void solve(vector<float>& arr, int n,
     solve(arr, n, ans, v, i + 1);
 }
  
-vector<vector<float> > AllSubsets(
-    vector<float> arr, int n)
+vector<vector<double> > AllSubsets(
+    vector<double> arr, int n)
 {
  
     // Set of vectors to store
     // required unique subsets
-    set<vector<float> > ans;
+    set<vector<double> > ans;
  
     sort(arr.begin(), arr.end());
-    vector<float> v;
+    vector<double> v;
     solve(arr, n, ans, v, 0);
  
     // Vector of vectors to store final result
-    vector<vector<float> > res;
+    vector<vector<double> > res;
     while (!ans.empty()) {
         res.push_back(*ans.begin());
         ans.erase(ans.begin());
@@ -62,9 +63,9 @@ vector<vector<float> > AllSubsets(
 }
  
 // Print Function
-void print(int N, vector<float>& A)
+void print(int N, vector<double>& A)
 {
-    vector<vector<float> > result = AllSubsets(A, N);
+    vector<vector<double> > result = AllSubsets(A, N);
  
     // printing the output
     for (int i = 0; i < result.size(); i++) {
@@ -100,7 +101,7 @@ int main()
         countLines++;
     }
     ifstream InputFileForParse("ResistorDatabase.txt");
-    float *Database = new float[countLines];
+    double *Database = new double[countLines];
     // Add each line to an array
     for (int i = 0; i < countLines; i++)
     {
@@ -110,11 +111,11 @@ int main()
     cout << "\n"
          << "Database Collected!" << endl;
 
-    vector<float> databaseVector;
+    vector<double> databaseVector;
     for (int z = 0; z < countLines; z++) {
         databaseVector.push_back(Database[z]);
     }
-    float userInput = 4;
+    double userInput = 4;
 
     // Initiate Program until user input is 0:
     while (userInput != 0)
@@ -136,12 +137,12 @@ int main()
                  << endl;
             cout << "You have chosen Parallel Resistor Calculator." << endl;
             cout << "Enter -1 to exit back to menu" << endl;
-            float Rtotal = 0;
+            double Rtotal = 0;
             cout << "What is the Total Resistance? \n";
             cin >> Rtotal;
             cout << "\nList Available Resistors Greater than Total Resistance\n";
 
-            float input = 1;
+            double input = 1;
             while (input != -1)
             {
                 cin >> input;
@@ -158,8 +159,8 @@ int main()
         {
             cout << "You have chosen Voltage Divider Calculator." << endl;
             cout << "Enter -1 to exit back to menu" << endl;
-            float voltageWanted = 0;
-            float VCC = 0;
+            double voltageWanted = 0;
+            double VCC = 0;
             cout << "\nWhat voltage do you need in the middle?\n";
             cin >> voltageWanted;
             cout << "\nWhat is Vcc?\n";
@@ -176,7 +177,7 @@ int main()
                     break;
                 }
             }
-            float Rinput = 1;
+            double Rinput = 1;
             if (input == 1)
             {
                 cout << "You are choosing the resistor to Vcc" << endl;
@@ -203,7 +204,8 @@ int main()
             cout << "This program will find the most optimal resistor pair based on the database of values you have." << endl;
             cout << "Enter -1 to exit back to menu" << endl << endl;
 
-            float Rtotal = 0;
+            double Rtotal = 0;
+            double MaximumOffset;
  
             //2^n - 1 non empty subsets of any set, where n is the size of the set
             cout << "There are " << pow(2,countLines)-1 << " non-empty subsets of resistors. " << endl;
@@ -224,18 +226,23 @@ int main()
             if(Rtotal < 0) {
                 break;
             }
-            //set of vectors of floats to contain all combinations
+            cout << "What is your maximum offset? (The amount the value will be off by)" << endl;
+            cin >> MaximumOffset;
+            if (MaximumOffset < 0) {
+                break;
+            }
+            //set of vectors of doubles to contain all combinations
             
             
             //Each element of the first dimension contains a subset, and each element of the second dimension contains a resistance value within that subset
-            vector<vector<float> > EveryCombination = AllSubsets(databaseVector,countLines);
+            vector<vector<double> > EveryCombination = AllSubsets(databaseVector,countLines);
             int BestSubsetIndex = -1;
-            float BestResistanceValue = 0;
-            float ResistanceOffset = MAXFLOAT;
-            vector<vector<float> > duplicateResistances;
+            double BestResistanceValue = 0;
+            double ResistanceOffset = DBL_MAX;
+            vector<vector<double> > duplicateResistances;
             //check for the best combination of resistors
             for (int i = 0; i < EveryCombination.size(); i++) {
-                float tempResistance = ParallelResistorsMultiple(EveryCombination[i],EveryCombination[i].size()); 
+                double tempResistance = ParallelResistorsMultiple(EveryCombination[i],EveryCombination[i].size()); 
                 if (tempResistance != INT32_MIN) {
                     //if one resistance is closer to the desired value, clear duplicate resistance vector and set current resistance as best value
                     if (abs(Rtotal - tempResistance) < ResistanceOffset) {
@@ -262,15 +269,15 @@ int main()
                 }
             }
             if (duplicateSituation) {
-                cout << "\n" << "The closest resistance is " << BestResistanceValue << " Ohms." << endl;
+                cout << "\n" << "The closest resistance is " << BestResistanceValue << " Ohms. It is off by " << ResistanceOffset << " Ohms." << endl;
                 cout << "\n" << "The combination of resistors is: " << endl;
                 for (int i = 0; i < duplicateResistances[BestSubsetIndex].size(); i++) {
                     cout << duplicateResistances[BestSubsetIndex][i] << " ";
                 }
-                cout << endl;
+                cout << endl << endl;
             }
             else {
-                cout << "The closest resistance is " << BestResistanceValue << " Ohms." << endl;
+                cout << "The closest resistance is " << BestResistanceValue << " Ohms. It is off by " << ResistanceOffset << " Ohms." << endl;
                 cout << "The combination of resistors is: " << endl;
                 for (int i = 0; i < EveryCombination[BestSubsetIndex].size(); i++) {
                     cout << EveryCombination[BestSubsetIndex][i] << " ";
