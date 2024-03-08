@@ -87,7 +87,7 @@ void print(int N, vector<double>& A)
 
 
 
-// This code is contained in a single file for intentional obfuscation :)
+// This code is contained in a single file for intentional obfuscation at this point :)
 int main()
 {
 
