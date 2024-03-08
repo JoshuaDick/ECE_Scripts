@@ -1,3 +1,6 @@
+//Written by Joshua Dick
+//March 8, 2024
+//The purpose of this program is to provide some useful calculations live when doing lab. The menu is fairly self explanatory in console.
 #include <iostream>
 #include "UsefulFunctions.h"
 #include <fstream>
@@ -7,6 +10,7 @@
 #include<cctype>
 #include<float.h>
 using namespace std;
+
 
 //Some Functions here to for the 3rd choice in the program
 //Calculate the size of n resistors in parallel
