@@ -1,5 +1,5 @@
 Some useful scripts for ECE Labs
 
-All You need is Main.cpp, ResistorDatabase.txt, and UsefulFunctions.h to run all of them at once.
+All You need is Main.cpp, ResistorDatabase.txt, and UsefulFunctions.h to run main.cpp effectively.
 
 The program explains itself while running, but the ResistorDatabase.txt is simply a text file with different float resistance values separated by newlines.
